@@ -1,0 +1,14 @@
+{
+    "agnes": {
+        "api_key": "你的Agnes API Key (https://platform.agnes-ai.com/)",
+        "base_url": "https://apihub.agnes-ai.com/v1",
+        "text_model": "agnes-1.5-pro",
+        "image_model": "agnes-image-2.1-flash",
+        "video_model": "agnes-video-v2.0"
+    },
+    "deepseek": {
+        "api_key": "你的DeepSeek API Key",
+        "base_url": "https://api.deepseek.com",
+        "model": "deepseek-v4-pro"
+    }
+}

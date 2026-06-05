@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "video-workflow"
+version = "0.1.0"
+description = "AI-powered video generation workflow: idea → script → storyboard → video → refinement"
+requires-python = ">=3.10"
+dependencies = [
+    "requests>=2.28.0",
+    "openai>=1.0.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["video_workflow*"]
