@@ -1,4 +1,4 @@
-"""数据模型：剧本、分镜、视频任务、项目"""
+"""数据模型：Scene, Script, VideoTask, Project"""
 
 from __future__ import annotations
 
@@ -21,43 +21,44 @@ def _uid() -> str:
 class Scene:
     """单个分镜"""
     id: str = field(default_factory=lambda: f"scene_{_uid()}")
-    index: int = 0                     # 在剧本中的序号
-    title: str = ""                    # 分镜标题
-    description: str = ""              # 画面描述（中文）
-    dialogue: str = ""                 # 旁白/台词
-    camera_direction: str = ""         # 镜头运动
-    mood: str = ""                     # 氛围
-    duration_seconds: float = 5.0      # 时长(秒)
-    image_prompt: str = ""             # 英文图生图prompt
-    video_prompt: str = ""             # 英文视频prompt
-    video_task_id: str = ""            # Agnes任务ID
-    video_path: str = ""               # 本地视频路径
-    image_path: str = ""               # 本地图片路径
-    status: str = "pending"            # pending|image_ready|video_submitted|video_ready|failed
+    index: int = 0
+    title: str = ""
+    description: str = ""
+    dialogue: str = ""
+    camera_direction: str = ""
+    mood: str = ""
+    duration_seconds: float = 5.0
+    image_prompt: str = ""
+    video_prompt: str = ""
+    video_task_id: str = ""
+    video_path: str = ""
+    image_path: str = ""
+    status: str = "pending"  # pending|image_ready|video_submitted|video_ready|failed
+    # 素材绑定（新增）
+    characters: list[str] = field(default_factory=list)
+    location: str = ""
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
 
     @classmethod
     def from_dict(cls, d: dict[str, Any]) -> Scene:
-        # 过滤掉不存在于dataclass中的key
         valid_keys = {f.name for f in cls.__dataclass_fields__.values()}
-        filtered = {k: v for k, v in d.items() if k in valid_keys}
-        return cls(**filtered)
+        return cls(**{k: v for k, v in d.items() if k in valid_keys})
 
 
 @dataclass
 class Script:
     """完整剧本"""
     id: str = field(default_factory=_uid)
-    title: str = ""                    # 视频标题
-    idea: str = ""                     # 原始创意
-    style: str = "cinematic"           # 视觉风格
-    target_duration: float = 60.0      # 目标总时长(秒)
+    title: str = ""
+    idea: str = ""
+    style: str = "cinematic"
+    target_duration: float = 60.0
     scenes: list[Scene] = field(default_factory=list)
     created_at: str = field(default_factory=_now)
-    refined_from: str = ""             # 父剧本ID（精加工来源）
-    character_description: str = ""    # 角色一致性描述（英文，注入所有prompt）
+    refined_from: str = ""
+    character_description: str = ""
 
     def to_dict(self) -> dict[str, Any]:
         d = asdict(self)
@@ -67,7 +68,8 @@ class Script:
     @classmethod
     def from_dict(cls, d: dict[str, Any]) -> Script:
         scenes_data = d.pop("scenes", [])
-        script = cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
+        valid_keys = {f.name for f in cls.__dataclass_fields__.values()}
+        script = cls(**{k: v for k, v in d.items() if k in valid_keys})
         script.scenes = [Scene.from_dict(s) for s in scenes_data]
         return script
 
@@ -75,15 +77,18 @@ class Script:
     def scene_count(self) -> int:
         return len(self.scenes)
 
+    def pending_scenes(self) -> list[Scene]:
+        return [s for s in self.scenes if s.status not in ("video_ready",)]
+
 
 @dataclass
 class VideoTask:
     """视频生成任务追踪"""
     task_id: str = ""
     scene_id: str = ""
-    status: str = "submitted"          # submitted|processing|completed|failed
-    video_url: str = ""               # 远端URL
-    local_path: str = ""              # 本地路径
+    status: str = "submitted"
+    video_url: str = ""
+    local_path: str = ""
     submitted_at: str = field(default_factory=_now)
     poll_count: int = 0
     error_message: str = ""
@@ -94,18 +99,17 @@ class VideoTask:
     @classmethod
     def from_dict(cls, d: dict[str, Any]) -> VideoTask:
         valid_keys = {f.name for f in cls.__dataclass_fields__.values()}
-        filtered = {k: v for k, v in d.items() if k in valid_keys}
-        return cls(**filtered)
+        return cls(**{k: v for k, v in d.items() if k in valid_keys})
 
 
 @dataclass
 class Project:
-    """项目状态——state.json的完整表示"""
+    """项目状态"""
     name: str = ""
     script: Script | None = None
-    video_tasks: dict[str, VideoTask] = field(default_factory=dict)  # task_id -> VideoTask
-    completed_steps: list[str] = field(default_factory=list)          # ["script", "images", "videos"]
-    current_step: str = "init"         # init|script|images|videos|done
+    video_tasks: dict[str, VideoTask] = field(default_factory=dict)
+    completed_steps: list[str] = field(default_factory=list)
+    current_step: str = "init"
     created_at: str = field(default_factory=_now)
 
     def to_dict(self) -> dict[str, Any]:
@@ -120,14 +124,13 @@ class Project:
 
     @classmethod
     def from_dict(cls, d: dict[str, Any]) -> Project:
-        project = cls(
+        p = cls(
             name=d.get("name", ""),
             completed_steps=d.get("completed_steps", []),
             current_step=d.get("current_step", "init"),
             created_at=d.get("created_at", _now()),
         )
         if d.get("script"):
-            project.script = Script.from_dict(d["script"])
-        tasks = d.get("video_tasks", {})
-        project.video_tasks = {tid: VideoTask.from_dict(t) for tid, t in tasks.items()}
-        return project
+            p.script = Script.from_dict(d["script"])
+        p.video_tasks = {tid: VideoTask.from_dict(t) for tid, t in d.get("video_tasks", {}).items()}
+        return p
