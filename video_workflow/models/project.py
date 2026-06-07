@@ -33,7 +33,8 @@ class Scene:
     video_task_id: str = ""
     video_path: str = ""
     image_path: str = ""
-    status: str = "pending"  # pending|image_ready|video_submitted|video_ready|failed
+    status: str = "pending"
+    transition: str = ""             # 从前一幕到本幕的过渡描述
     # 素材绑定（新增）
     characters: list[str] = field(default_factory=list)
     location: str = ""

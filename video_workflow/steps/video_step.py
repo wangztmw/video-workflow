@@ -22,14 +22,25 @@ class VideoStep(PipelineStep):
         provider = ctx.get_video_provider()
 
         # 收集待处理的场景
+        scenes = ctx.script.scenes
         pending = []
-        for scene in ctx.script.scenes:
+        for i, scene in enumerate(scenes):
             if scene.status == "video_ready" and scene.video_path:
                 print(f"[video] 跳过: {scene.title}")
                 continue
             prompt = scene.video_prompt or scene.image_prompt or scene.description
             if not prompt:
                 continue
+
+            # 注入转场指令：开头承接上一幕，结尾引出下一幕
+            transition_hints = []
+            if scene.transition and scene.transition != "none":
+                transition_hints.append(f"START with: {scene.transition}")
+            if i + 1 < len(scenes) and scenes[i + 1].transition and scenes[i + 1].transition != "none":
+                transition_hints.append(f"END with: {scenes[i + 1].transition}")
+            if transition_hints:
+                prompt = f"{prompt}. Seamless transition required: {'; '.join(transition_hints)}."
+
             params = VideoParams(
                 prompt=prompt,
                 width=ctx.settings.video_width,
