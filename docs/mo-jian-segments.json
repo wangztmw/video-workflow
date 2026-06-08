@@ -1,0 +1,67 @@
+{
+  "title": "墨剑",
+  "style": "水墨武侠 ink wash painting style",
+  "character_description": "A young swordsman, 18 years old, with refined features and intense eyes, wearing flowing black traditional robes, long dark hair tied up with a simple cord, holding an unsharpened iron sword. His movements blend calligraphy brush strokes with sword techniques.",
+  "segments": [
+    {
+      "index": 0,
+      "title": "古寺寻卷",
+      "video_prompt": "A young swordsman in flowing black ink-wash style robes pushes open a decaying wooden door of an ancient temple, dust particles dancing in shafts of sunlight streaming through broken windows, camera slowly tracking forward as he walks toward a yellowed scroll on a stone altar, cinematic wide shot, misty atmosphere with floating dust motes, ink painting aesthetic",
+      "transition_to_next": "camera slowly pushes into the scroll until the ancient paper texture fills the entire frame"
+    },
+    {
+      "index": 1,
+      "title": "墨卷展开",
+      "video_prompt": "camera pulls back from ancient paper texture revealing the young swordsman's hands untying a silk cord, the scroll unfurls slowly revealing a monochrome ink landscape of mountains and bamboo, the ink on the painting begins to shimmer and ripple like water, camera slowly pushing in on a single droplet of ink that starts to move on its own, mystical atmosphere",
+      "transition_to_next": "camera pushes into the single trembling ink droplet until pure black fills the frame"
+    },
+    {
+      "index": 2,
+      "title": "墨影成形",
+      "video_prompt": "a single ink droplet rises from the painted surface floating in mid-air, it rotates and expands swirling into a vortex of black ink, the ink coalesces into a humanoid silhouette with flowing ink-like edges, the shadow figure stands facing the young swordsman in the temple hall, camera slowly pulls back to reveal the full confrontation scene, dramatic lighting with dust and ink particles suspended in air",
+      "transition_to_next": "the ink shadow lunges forward, camera quickly follows its motion blurring into black streaks"
+    },
+    {
+      "index": 3,
+      "title": "初次交锋",
+      "video_prompt": "the ink shadow's arm extends into a whip of black liquid striking toward the young swordsman, he draws his iron sword to block, the collision between metal and ink explodes into splashing ink droplets, camera shakes with impact then tracks the swordsman as he is pushed back several steps, dust swirling around their feet in the temple hall, dynamic action sequence",
+      "transition_to_next": "camera follows the swordsman stumbling backward until he crashes against a stone pillar, the impact reverberates"
+    },
+    {
+      "index": 4,
+      "title": "节节败退",
+      "video_prompt": "the young swordsman desperately parries as the ink shadow attacks relentlessly, multiple ink tendrils forming dragon-like shapes swirling around him, his sword techniques are precise but pass through the ink harmlessly, camera circling around the chaotic battle, growing sense of desperation, the swordsman is struck down his sword sliding across the stone floor, camera tilts down to his face on the ground with the ink shadow looming above",
+      "transition_to_next": "camera slowly pushes into the swordsman's closing eyes until the frame goes dark"
+    },
+    {
+      "index": 5,
+      "title": "师父遗音",
+      "video_prompt": "from total darkness warm golden light emerges revealing a memory scene, the young swordsman's elderly master draws bamboo on the ground with a tree branch instead of a sword, his brush-like strokes leaving elegant ink marks on the earth, the master speaks silently his wisdom visible in his calm expression, the ground strokes shimmer and transform into sword trajectories, warm nostalgic color palette contrasting with the cold temple, camera gently floating through this dreamlike memory space",
+      "transition_to_next": "the branch's ink stroke on the ground morphs into the iron sword's edge, color temperature shifts back to cold blue"
+    },
+    {
+      "index": 6,
+      "title": "以剑为笔",
+      "video_prompt": "the young swordsman's eyes open with newfound clarity, he picks up his sword but holds it differently now like a calligraphy brush, the sword tip traces the stone floor leaving an ink mark behind, he slowly rises his blade pointing at the ink shadow, the sword begins to glow with faint blue light, camera orbits around him capturing the transformation in his stance, the atmosphere shifts from despair to determination",
+      "transition_to_next": "camera sweeps around to face the ink shadow as the young swordsman charges forward with his glowing blade"
+    },
+    {
+      "index": 7,
+      "title": "墨舞对决",
+      "video_prompt": "the young swordsman attacks with flowing brush-like sword strokes, each swing leaving trails of ink suspended in air like calligraphy, the ink shadow's tendrils are deflected by the written strokes forming visible characters, the swordsman writes a giant Chinese character in the air that freezes the shadow in place, camera spirals around the frozen confrontation with ink trails hanging in the space between them, dramatic black and white contrast, epic climax",
+      "transition_to_next": "camera slowly zooms into the frozen ink shadow's formless face area where the swordsman's blade tip approaches"
+    },
+    {
+      "index": 8,
+      "title": "收墨归卷",
+      "video_prompt": "the young swordsman gently touches the tip of his blade to the ink shadow's forehead, the solid shadow form dissolves into thousands of ink droplets suspended in the air like black rain, the droplets reverse course flowing back into the scroll on the altar, the painting now shows the swordsman's own portrait with a subtle smile, camera slowly tracks the falling ink droplets from the air back down to the scroll surface, serene and beautiful resolution, soft ink-wash lighting",
+      "transition_to_next": "camera lingers on the painted portrait then slowly tilts up toward the temple door where warm dawn light begins to enter"
+    },
+    {
+      "index": 9,
+      "title": "破晓而出",
+      "video_prompt": "the young swordsman walks out of the temple gate into the breaking dawn, golden sunrise illuminates his face and robes, he turns to look back at the ancient temple one final time with a peaceful expression, he tucks the scroll into his robe and begins walking down the ancient stone path into misty mountains, camera slowly rises into an aerial crane shot revealing the entire valley with the temple and the lone figure growing smaller against the vast landscape, epic closing shot, ink wash painting come to life",
+      "transition_to_next": "none"
+    }
+  ]
+}
