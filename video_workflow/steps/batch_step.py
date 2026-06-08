@@ -61,10 +61,11 @@ class BatchStep(PipelineStep):
     """批量视频生成步骤"""
     name = "batch_video"
 
-    def __init__(self, segments_json: str, project_name: str = "batch"):
+    def __init__(self, segments_json: str, project_name: str = "batch", quick_poll: bool = False):
         self.segments_json = Path(segments_json)
         self.project_name = project_name
         self.checkpoint_path: Path | None = None
+        self.quick_poll = quick_poll  # 短轮询模式：5分钟一轮，反复运行
 
     def execute(self, ctx: PipelineContext) -> PipelineContext:
         # 加载分段
@@ -91,43 +92,51 @@ class BatchStep(PipelineStep):
         provider = ctx.get_video_provider()
         fps = ctx.settings.video_fps
 
-        # === 阶段1: 提交所有任务 ===
+        # === 阶段1: 提交所有任务（带重试） ===
         for seg in segments:
             if seg.status in ("submitted", "completed"):
                 continue  # 已处理
-            try:
-                params = VideoParams(
-                    prompt=seg.video_prompt,
-                    width=ctx.settings.video_width,
-                    height=ctx.settings.video_height,
-                    num_frames=self._dur_to_frames(12, fps),  # 每段~12秒
-                    frame_rate=fps,
-                )
-                # 注入转场指令
-                if seg.transition_to_next and seg.index < len(segments) - 1:
-                    params.prompt += f". END the video with: {seg.transition_to_next}"
-                prev = segments[seg.index - 1] if seg.index > 0 else None
-                if prev and prev.transition_to_next:
-                    params.prompt += f". START with: camera continuing from previous scene via {prev.transition_to_next}"
+            submitted = False
+            for attempt in range(10):  # 最多重试10次
+                try:
+                    params = VideoParams(
+                        prompt=seg.video_prompt,
+                        width=ctx.settings.video_width,
+                        height=ctx.settings.video_height,
+                        num_frames=self._dur_to_frames(12, fps),
+                        frame_rate=fps,
+                    )
+                    if seg.transition_to_next and seg.index < len(segments) - 1:
+                        params.prompt += f". END: {seg.transition_to_next}"
+                    prev = segments[seg.index - 1] if seg.index > 0 else None
+                    if prev and prev.transition_to_next:
+                        params.prompt += f". START: continuing via {prev.transition_to_next}"
 
-                print(f"[batch] 提交 [{seg.index}] {seg.title}...")
-                tid = provider.submit(params)
-                seg.task_id = tid
-                seg.status = "submitted"
-                self._save_checkpoint(segments, data)
-                time.sleep(1)  # 提交间隔
-            except Exception as e:
+                    print(f"[batch] 提交 [{seg.index}] {seg.title} (尝试{attempt+1}/10)...")
+                    tid = provider.submit(params)
+                    seg.task_id = tid
+                    seg.status = "submitted"
+                    self._save_checkpoint(segments, data)
+                    submitted = True
+                    time.sleep(1)
+                    break
+                except Exception as e:
+                    wait = min(5 * (2 ** attempt), 120)
+                    print(f"[batch] [{seg.index}] 失败({attempt+1}/10): {str(e)[:80]}... 等{wait}s")
+                    time.sleep(wait)
+            if not submitted:
                 seg.status = "failed"
-                seg.error = str(e)[:200]
-                print(f"[batch] 提交失败 [{seg.index}]: {e}")
+                seg.error = "提交重试耗尽"
                 self._save_checkpoint(segments, data)
 
         # === 阶段2: 轮询所有任务 ===
         pending = [s for s in segments if s.status == "submitted"]
         if pending:
-            print(f"\n[batch] 等待 {len(pending)} 个任务完成...")
-            poll_interval = ctx.settings.video_poll_interval
-            max_wait = ctx.settings.video_max_wait
+            total_pending = len(pending)
+            # quick_poll模式：短时间轮询，适合反复运行
+            poll_interval = 10
+            max_wait = 300 if self.quick_poll else ctx.settings.video_max_wait
+            print(f"\n[batch] 轮询 {total_pending} 个任务 (最长{max_wait}s)...")
             elapsed = 0
 
             while pending and elapsed < max_wait:

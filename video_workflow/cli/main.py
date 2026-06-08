@@ -239,13 +239,14 @@ def cmd_check(config_path: str | None = None):
     print("=" * 50)
 
 
-def cmd_batch(segments_json: str, project_name: str = "batch", config_path: str | None = None):
+def cmd_batch(segments_json: str, project_name: str = "batch",
+              config_path: str | None = None, quick: bool = False):
     """'batch' 命令：批量故事分段视频生成"""
     apply_dns_patch()
     from ..steps.batch_step import BatchStep
 
     ctx = PipelineContext(project_name=project_name, config_path=config_path)
-    step = BatchStep(segments_json, project_name)
+    step = BatchStep(segments_json, project_name, quick_poll=quick)
     ctx = step.execute(ctx)
 
 
@@ -312,6 +313,7 @@ def build_parser() -> argparse.ArgumentParser:
     p_batch = sub.add_parser("batch", help="批量故事分段视频生成")
     p_batch.add_argument("segments", help="分段JSON文件路径")
     p_batch.add_argument("--name", default="batch", help="项目名称")
+    p_batch.add_argument("--quick", action="store_true", help="快速轮询模式(5分钟/轮)")
     p_batch.add_argument("--config", default=None)
     return p
 
@@ -350,7 +352,7 @@ def main(argv: list[str] | None = None):
         elif args.command == "check":
             cmd_check(cfg)
         elif args.command == "batch":
-            cmd_batch(args.segments, args.name, cfg)
+            cmd_batch(args.segments, args.name, cfg, getattr(args, 'quick', False))
         return 0
     except KeyboardInterrupt:
         print("\n[workflow] 用户中断")
