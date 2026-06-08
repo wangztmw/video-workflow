@@ -21,7 +21,7 @@ from ..plugins.state_autosave import StateAutoSavePlugin
 
 from ..utils.dns import apply_dns_patch
 from ..utils.stitcher import VideoStitcher
-from ..models.storage import ProjectStorage
+from ..core_type.storage import ProjectStorage
 
 
 def _default_pipeline(skip_images: bool = False) -> Pipeline:

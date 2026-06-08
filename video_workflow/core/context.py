@@ -6,8 +6,8 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-from ..models.project import Script
-from ..models.storage import ProjectStorage, slugify
+from ..core_type.project import Script
+from ..core_type.storage import ProjectStorage, slugify
 from ..utils.config import load_config
 
 
@@ -83,7 +83,7 @@ class PipelineContext:
     # ---- 状态持久化 ----
 
     def save(self):
-        from ..models.project import Project, VideoTask
+        from ..core_type.project import Project, VideoTask
         project = Project(
             name=self.project_name,
             script=self.script,

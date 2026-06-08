@@ -7,7 +7,7 @@ import re
 from typing import TYPE_CHECKING
 
 from .base import PipelineStep
-from ..models.project import Script, Scene
+from ..core_type.project import Script, Scene
 
 if TYPE_CHECKING:
     from ..core.context import PipelineContext
