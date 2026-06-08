@@ -10,6 +10,13 @@ DEFAULT_CONFIG_DIR = Path(__file__).parent.parent.parent  # video-workflow/
 DEFAULT_CONFIG_PATH = DEFAULT_CONFIG_DIR / "config.json"
 
 DEFAULT_CONFIG: dict = {
+    "seedance": {
+        "api_key": "",
+        "base_url": "https://ark.cn-beijing.volces.com/api/v3",
+        "model": "doubao-seedance-1-5-pro-251215",
+        "video_poll_interval": 10,
+        "video_max_wait": 600,
+    },
     "agnes": {
         "api_key": "",
         "base_url": "https://apihub.agnes-ai.com/v1",

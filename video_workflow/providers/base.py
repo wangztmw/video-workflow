@@ -23,6 +23,10 @@ class VideoParams:
     seed: int | None = None
     image: str = ""          # 图生视频：参考图URL
     keyframes: list[dict] | None = None  # 关键帧模式
+    duration_seconds: int = 0            # 直接指定秒数（Seedance）
+    reference_images: list[str] | None = None   # 多图参考（最多9张）
+    reference_video: str = ""            # 视频参考
+    reference_audio: str = ""            # 音频参考
 
 
 class TextProvider(ABC):

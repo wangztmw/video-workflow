@@ -26,5 +26,9 @@ class ServiceRegistry:
 
     @staticmethod
     def get_video_provider(config: dict) -> VideoProvider:
+        sd = config.get("seedance", {})
+        if sd.get("api_key"):
+            from ..providers.seedance_video import SeedanceVideoProvider
+            return SeedanceVideoProvider(sd)
         from ..providers.agnes_video import AgnesVideoProvider
         return AgnesVideoProvider(config.get("agnes", {}))

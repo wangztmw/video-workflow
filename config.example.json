@@ -1,4 +1,9 @@
 {
+    "seedance": {
+        "api_key": "你的火山引擎ARK API Key",
+        "base_url": "https://ark.cn-beijing.volces.com/api/v3",
+        "model": "doubao-seedance-1-5-pro-251215"
+    },
     "agnes": {
         "api_key": "你的Agnes API Key (https://platform.agnes-ai.com/)",
         "base_url": "https://apihub.agnes-ai.com/v1",
