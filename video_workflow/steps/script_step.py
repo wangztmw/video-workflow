@@ -7,10 +7,10 @@ import re
 from typing import TYPE_CHECKING
 
 from .base import PipelineStep
-from ..core_type.project import Script, Scene
+from ..ucore_type.project import Script, Scene
 
 if TYPE_CHECKING:
-    from ..core.context import PipelineContext
+    from ..ucore.context import PipelineContext
 
 SYSTEM_PROMPT = """你是一个专业的短视频导演，擅长设计流畅的镜头语言和场景过渡。
 

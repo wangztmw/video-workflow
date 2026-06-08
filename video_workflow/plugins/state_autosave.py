@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING
 from .base import Plugin
 
 if TYPE_CHECKING:
-    from ..core.context import PipelineContext
+    from ..ucore.context import PipelineContext
 
 
 class StateAutoSavePlugin(Plugin):

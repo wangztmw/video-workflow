@@ -7,10 +7,10 @@ import re
 from typing import TYPE_CHECKING
 
 from .base import PipelineStep
-from ..core_type.project import Script, Scene
+from ..ucore_type.project import Script, Scene
 
 if TYPE_CHECKING:
-    from ..core.context import PipelineContext
+    from ..ucore.context import PipelineContext
 
 REFINE_PROMPT = """你是分镜精加工专家。根据扩充指令，将一个分镜拆分成多个更详细的分镜。
 

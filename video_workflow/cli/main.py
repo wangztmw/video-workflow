@@ -6,9 +6,9 @@ import argparse
 import sys
 from pathlib import Path
 
-from ..core.context import PipelineContext
-from ..core.pipeline import Pipeline
-from ..core.registry import ServiceRegistry
+from ..ucore.context import PipelineContext
+from ..ucore.pipeline import Pipeline
+from ..ucore.registry import ServiceRegistry
 
 from ..steps.script_step import ScriptStep
 from ..steps.image_step import ImageStep
@@ -21,7 +21,7 @@ from ..plugins.state_autosave import StateAutoSavePlugin
 
 from ..utils.dns import apply_dns_patch
 from ..utils.stitcher import VideoStitcher
-from ..core_type.storage import ProjectStorage
+from ..ucore_type.storage import ProjectStorage
 
 
 def _default_pipeline(skip_images: bool = False) -> Pipeline:

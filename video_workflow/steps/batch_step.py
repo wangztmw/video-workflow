@@ -12,7 +12,7 @@ from .base import PipelineStep
 from ..providers.base import VideoParams
 
 if TYPE_CHECKING:
-    from ..core.context import PipelineContext
+    from ..ucore.context import PipelineContext
 
 
 @dataclass

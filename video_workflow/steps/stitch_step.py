@@ -9,7 +9,7 @@ from .base import PipelineStep
 from ..utils.stitcher import VideoStitcher
 
 if TYPE_CHECKING:
-    from ..core.context import PipelineContext
+    from ..ucore.context import PipelineContext
 
 
 class StitchStep(PipelineStep):
